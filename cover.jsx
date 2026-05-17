@@ -21,7 +21,6 @@ function CoverPage({ onSubmit, onAdmin }) {
     setSubmitting(true);
     const clean = email.trim().toLowerCase();
     localStorage.setItem('fi_current_email', clean);
-    localStorage.setItem('subscribed', 'true');
 
     fetch('/api/subscribe', {
       method: 'POST',
