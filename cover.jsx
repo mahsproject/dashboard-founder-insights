@@ -22,20 +22,28 @@ function CoverPage({ onSubmit, onAdmin }) {
     const clean = email.trim().toLowerCase();
     localStorage.setItem('fi_current_email', clean);
 
-    fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: clean, user_agent: navigator.userAgent }),
-    })
-      .then(r => r.json())
-      .then(data => {
-        setSavedFlag(!!data.ok);
-        setTimeout(() => onSubmit(), 700);
+    const now = new Date().toISOString();
+    const db = window.FI_DB;
+    const ref = db.collection('subscribers').doc(clean);
+    ref.get()
+      .then(snap => {
+        if (snap.exists) {
+          return ref.update({
+            last_seen: now,
+            visit_count: firebase.firestore.FieldValue.increment(1),
+          });
+        } else {
+          return ref.set({
+            email: clean,
+            created_at: now,
+            last_seen: now,
+            visit_count: 1,
+            user_agent: navigator.userAgent.slice(0, 300),
+          });
+        }
       })
-      .catch(() => {
-        setSavedFlag(false);
-        setTimeout(() => onSubmit(), 700);
-      });
+      .then(() => { setSavedFlag(true); setTimeout(() => onSubmit(), 700); })
+      .catch(() => { setSavedFlag(false); setTimeout(() => onSubmit(), 700); });
   };
 
   return (

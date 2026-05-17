@@ -59,11 +59,11 @@ function App() {
 
   const trackView = () => {
     const email = localStorage.getItem('fi_current_email');
-    if (!email) return;
-    fetch('/api/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, user_agent: navigator.userAgent }),
+    if (!email || !window.FI_DB) return;
+    const now = new Date().toISOString();
+    window.FI_DB.collection('subscribers').doc(email).update({
+      last_seen: now,
+      visit_count: firebase.firestore.FieldValue.increment(1),
     }).catch(() => {});
   };
 

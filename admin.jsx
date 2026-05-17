@@ -40,9 +40,13 @@ function AdminPage({ onExit }) {
   const loadList = React.useCallback(() => {
     setLoading(true);
     setFetchErr(false);
-    fetch('/api/subscribers')
-      .then(r => r.json())
-      .then(data => { setList(data); setLoading(false); })
+    window.FI_DB.collection('subscribers')
+      .orderBy('created_at', 'desc')
+      .get()
+      .then(snap => {
+        setList(snap.docs.map(d => d.data()));
+        setLoading(false);
+      })
       .catch(() => { setFetchErr(true); setLoading(false); });
   }, []);
 
