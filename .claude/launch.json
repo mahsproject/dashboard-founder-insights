@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "founder-insights",
+      "runtimeExecutable": "py",
+      "runtimeArgs": ["server.py"],
+      "port": 3000
+    }
+  ]
+}

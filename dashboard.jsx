@@ -175,7 +175,7 @@ function Sec01() {
           <div className="col-5">
             <SectionHead
               eyebrow="01 · By the numbers"
-              title={filtered ? "Your filtered cohort." : "A 1,450-person portrait."}
+              title={filtered ? "Your filtered cohort." : "Founders Behind IPO Companies"}
               caption={
                 filtered
                   ? "Aggregates below are recomputed from the row-level dataset using your filters."
@@ -402,8 +402,7 @@ function Colophon() {
         <div className="colophon-mark">Fin.</div>
         <div className="colophon-text">
           Founder Insights · Vol. 01 · 2026<br />
-          Set in Fraunces, Instrument Sans and JetBrains Mono<br />
-          Built with SEBI data · No ads · No tracking
+          Built with SEBI data
         </div>
       </Reveal>
     </div>

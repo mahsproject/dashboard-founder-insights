@@ -55,6 +55,21 @@ function App() {
     else if (t.showGate === 'never') setView('issue');
   }, [t.showGate]);
 
+  // Track each visit to the issue view.
+  React.useEffect(() => {
+    if (view === 'issue') trackView();
+  }, [view]);
+
+  const trackView = () => {
+    const email = localStorage.getItem('fi_current_email');
+    if (!email) return;
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, user_agent: navigator.userAgent }),
+    }).catch(() => {});
+  };
+
   const handleSubmitted = () => {
     setView('issue');
     window.scrollTo({ top: 0 });
@@ -77,7 +92,7 @@ function App() {
 
   let body;
   if (view === 'admin')      body = <AdminPage key="admin" onExit={exitAdmin} />;
-  else if (view === 'cover') body = <CoverPage key="cover" onSubmit={handleSubmitted} />;
+  else if (view === 'cover') body = <CoverPage key="cover" onSubmit={handleSubmitted} onAdmin={gotoAdmin} />;
   else                       body = <Issue     key="issue" onReset={handleReset} />;
 
   return (

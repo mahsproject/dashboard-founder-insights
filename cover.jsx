@@ -1,7 +1,7 @@
 // Cover page — magazine-cover treatment.
 const { useState: useStateCover } = React;
 
-function CoverPage({ onSubmit }) {
+function CoverPage({ onSubmit, onAdmin }) {
   const [email, setEmail] = React.useState('');
   const [focused, setFocused] = React.useState(false);
   const [error, setError] = React.useState(false);
@@ -19,34 +19,36 @@ function CoverPage({ onSubmit }) {
     }
     setError(false);
     setSubmitting(true);
-    let saved = false;
-    try {
-      const list = JSON.parse(localStorage.getItem('fi_subscribers') || '[]');
-      const clean = email.trim().toLowerCase();
-      const existing = list.find(r => r.email === clean);
-      if (existing) {
-        existing.last_seen = new Date().toISOString();
-      } else {
-        list.push({
-          email: clean,
-          created_at: new Date().toISOString(),
-          user_agent: navigator.userAgent.slice(0, 200),
-        });
-      }
-      localStorage.setItem('fi_subscribers', JSON.stringify(list));
-      localStorage.setItem('subscribed', 'true');
-      saved = true;
-    } catch (_) {}
-    setSavedFlag(saved);
-    // Show "saved" state for 700ms, then redirect.
-    setTimeout(() => onSubmit(), 700);
+    const clean = email.trim().toLowerCase();
+    localStorage.setItem('fi_current_email', clean);
+    localStorage.setItem('subscribed', 'true');
+
+    fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: clean, user_agent: navigator.userAgent }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        setSavedFlag(!!data.ok);
+        setTimeout(() => onSubmit(), 700);
+      })
+      .catch(() => {
+        setSavedFlag(false);
+        setTimeout(() => onSubmit(), 700);
+      });
   };
 
   return (
     <div className="cover" data-screen-label="01 Cover">
       <div className="cover-top">
         <span className="mono">VOL. 01 · ISSUE 2026</span>
-        <span className="mono">01 / 02</span>
+        <div style={{display:'flex',alignItems:'center',gap:'20px'}}>
+          <span className="mono">01 / 02</span>
+          {onAdmin && (
+            <button className="cover-admin-btn" onClick={onAdmin}>Admin <span className="arr">→</span></button>
+          )}
+        </div>
       </div>
 
       <div className="cover-mid">
