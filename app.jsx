@@ -19,11 +19,8 @@ function App() {
 
   const initialView = React.useMemo(() => {
     if (readRoute() === 'admin') return 'admin';
-    if (t.showGate === 'always') return 'cover';
     if (t.showGate === 'never')  return 'issue';
-    try {
-      return localStorage.getItem('subscribed') === 'true' ? 'issue' : 'cover';
-    } catch (e) { return 'cover'; }
+    return 'cover';
   }, []);
 
   const [view, setView] = React.useState(initialView);
