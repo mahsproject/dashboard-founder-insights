@@ -2,12 +2,12 @@
    Type does the work. No cards. No shadows. Hairline rules only. */
 
 :root {
-  --paper:     #F5F1EA;
-  --paper-2:   #EDE7DB;       /* slightly deeper paper for callouts */
+  --paper:     #FFFFFF;
+  --paper-2:   #F0F0F0;       /* slightly deeper paper for callouts */
   --ink:       #1A1A1A;
   --ink-soft:  #5C5C5C;
-  --ink-soft-2:#8A8275;
-  --rule:      #D6CFC4;
+  --ink-soft-2:#9A9A9A;
+  --rule:      #E0E0E0;
   --accent:    #D63D1F;       /* vermillion */
   --accent-deep:#A82C12;
   --chart-1:   #1A1A1A;       /* ink */
