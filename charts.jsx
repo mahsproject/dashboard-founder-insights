@@ -412,15 +412,19 @@ function IndustryTreemap({ data }) {
       {tiles.map((t, i) => {
         const small = t.w < 100 || t.h < 60;
         const tiny = t.w < 60 || t.h < 40;
+        // Below this size the value digits can't fit the tile even with reduced
+        // padding — render a bare colored sliver (hover title still has the data)
+        // rather than letting the number overflow and collide with neighbours.
+        const micro = t.w < 24 || t.h < 28;
         return (
           <div key={i}
-               className={`treemap-tile ${shadeFor(t.name)}`}
+               className={`treemap-tile ${shadeFor(t.name)}${small ? ' is-small' : ''}`}
                style={{ left: t.x, top: t.y, width: t.w, height: t.h }}
                title={`${t.name}: ${t.value}`}>
             {!tiny && <div className="nm" style={small ? { fontSize: 11 } : {}}>
               {small ? abbrev(t.name) : t.name}
             </div>}
-            <div className="vl">{t.value}</div>
+            {!micro && <div className="vl">{t.value}</div>}
           </div>
         );
       })}

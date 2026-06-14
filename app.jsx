@@ -2,7 +2,7 @@
 const FI_DEFAULTS = /*EDITMODE-BEGIN*/{
   "showGate": "auto",
   "accent": "#D63D1F",
-  "paper": "#F5F1EA"
+  "paper": "#FFFFFF"
 }/*EDITMODE-END*/;
 
 const ACCENT_OPTIONS = ['#D63D1F', '#1F2D5C', '#0E5E3D', '#1A1A1A'];
